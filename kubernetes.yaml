@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: starling-ui
+  name: starling-ui-example
 spec:
   selector:
     matchLabels:
-      app: starling-ui
+      app: starling-ui-example
   template:
     metadata:
       labels:
-        app: starling-ui
+        app: starling-ui-example
     spec:
       hostNetwork: true
       shareProcessNamespace: true
       containers:
-      - name: starling-ui
-        image: uobflightlabstarling/starling-ui:latest
+      - name: starling-ui-example
+        image: uobflightlabstarling/starling-ui-example:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3000

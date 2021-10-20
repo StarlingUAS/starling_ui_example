@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <launch>
+
+    <!-- Set to true if running standalone -->
+    <arg name="rosbridge" default="$(env USE_ROSBRIDGE false)"/>
     
-    <!-- <executable cmd="/node_entrypoint.sh /ros_ws/src/ros2-web-bridge/bin/rosbridge.js" output="screen" unless="$(env CLIENT false)"/> -->
+    <!-- Start Rosbridge server, unnecessary if working with ProjectStarling, defaults to false -->
+    <executable cmd="/node_entrypoint.sh /ros_ws/src/ros2-web-bridge/bin/rosbridge.js" output="screen" if="$(var rosbridge)"/>
 
     <executable cwd="/ros_ws/src/ros2-web-bridge/examples" cmd="/node_entrypoint.sh index.js" output="screen"/>
 

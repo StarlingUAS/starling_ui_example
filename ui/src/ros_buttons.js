@@ -1,6 +1,11 @@
 // Connecting to ROS
 // -----------------
 var ros = new ROSLIB.Ros();
+var connectionstr = create_connectionion_str(window.location.hostname, '9090')
+
+function create_connectionion_str(url, port) {
+  return 'ws://'+url+':'+port;
+}
 
 // If there is an error on the backend, an 'error' emit will be emitted.
 ros.on('error', function(error) {
@@ -10,11 +15,6 @@ ros.on('error', function(error) {
   document.getElementById('error').style.display = 'inline';
   console.log(error);
 });
-
-ros.on('error', function(error) {
-  console.log('Maybe on k3s cluster, attempting to connect to localhost:30001')
-  ros.connect('ws://localhost:30001')
-})
 
 // Find out exactly when we made a connection.
 ros.on('connection', function() {
@@ -32,26 +32,29 @@ ros.on('close', function() {
   document.getElementById('closed').style.display = 'inline';
 });
 
-// Create a connection to the rosbridge WebSocket server.
-ros.connect('ws://'+window.location.hostname+':9090');
+function connectRosbridge(port) {
+  // Create a connection to the rosbridge WebSocket server.
+  connectionstr = create_connectionion_str(window.location.hostname, port)
+  ros.connect(connectionstr);
+  console.log('Connected to: '+connectionstr);
+}
 
 // Publish a Topic
-var example = new ROSLIB.Topic({
+var estop_publisher = new ROSLIB.Topic({
   ros : ros,
   name : '/emergency_stop',
-  messageType : 'std_msgs/String'
+  messageType : 'std_msgs/Empty'
 });
 
 // Publish a Topic
 var start_publisher = new ROSLIB.Topic({
   ros : ros,
   name : '/mission_start',
-  messageType : 'std_msgs/String'
+  messageType : 'std_msgs/Empty'
 });
 
 function sendEmergencyStop() {
-  var message = 'EMERGENCY STOP';
-  example.publish({data: message});
+  estop_publisher.publish({});
   console.log("Emergency Stop Pressed")
   $('#eStopSentMessage').show()
   document.getElementById('eStopButton').style.filter="brightness(50%)"
@@ -62,8 +65,7 @@ function sendEmergencyStop() {
 }
 
 function sendMissionStart() {
-  var message = 'MISSION START';
-  start_publisher.publish({data: message})
+  start_publisher.publish({})
   console.log("Mission Start Pressed")
   $('#missionStartSentMessage').show()
   document.getElementById('missionStartButton').style.filter="brightness(50%)"
@@ -75,3 +77,5 @@ function sendMissionStart() {
 
 document.getElementById('eStopButton').addEventListener('click',sendEmergencyStop);
 document.getElementById('missionStartButton').addEventListener('click',sendMissionStart);
+document.getElementById('rosbridgeport_input').addEventListener('input', function(evt) {connectRosbridge(this.value);})
+document.getElementById('rosbridgeport_input').dispatchEvent(new Event('input')); // Trigger default

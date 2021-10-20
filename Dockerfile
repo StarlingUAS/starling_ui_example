@@ -37,10 +37,14 @@ ENV FASTRTPS_DEFAULT_PROFILES_FILE /ros_ws/fastrtps_profiles.xml
 # Change the working directory
 WORKDIR /ros_ws
 
+ENV USE_ROSBRIDGE false
+ENV HTML_PORT 3000
+ENV ROSBRIDGE_PORT 9090
+
 # Expose html server
-EXPOSE 3000
+EXPOSE ${HTML_PORT}
 # Expose websocket server
-# EXPOSE 9090
+EXPOSE ${ROSBRIDGE_PORT}
 
 # Set initial command
 CMD [ "ros2", "launch", "launch/ui.launch.xml" ]

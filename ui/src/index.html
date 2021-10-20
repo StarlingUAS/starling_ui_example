@@ -28,11 +28,15 @@
 
     <div class="container">
         <div class="row">
-            <h1>Project Starling Dashboard</h1>
+            <h1>Project Starling Example Dashboard</h1>
         </div>
 
         <div class="row">
-            <div id="statusIndicator">
+            <div class="col-6">
+                <label for="port">Rosbridge Port: </label>
+                <input type="number" id="rosbridgeport_input" name="port" value="9090">
+            </div>
+            <div class="col-6" id="statusIndicator">
                 <p id="connecting">
                     Connecting to rosbridge...
                 </p>
