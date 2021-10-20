@@ -4,6 +4,7 @@ FROM ros:foxy-ros-base-focal
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         curl \
+        ros-foxy-mavros-msgs \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
