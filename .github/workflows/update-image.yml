@@ -34,7 +34,7 @@ jobs:
     needs: bump_version
     strategy:
       matrix:
-        targets: [starling-allocator]
+        targets: [starling-ui-example]
     steps:
       - name: Build Image
         uses: mhl787156/starling-bake-build-action@main

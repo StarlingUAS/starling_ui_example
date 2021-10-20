@@ -22,7 +22,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           organisation: uobflightlabstarling
-          image: starling-allocator
+          image: starling-ui-example
           tag: ${{github.event.pull_request.head.ref}}
 
 
