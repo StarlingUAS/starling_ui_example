@@ -19,7 +19,7 @@
     <script src="resources/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="resources/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="resources/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+    <script src="resources/jpeg-encoder.js"></script>
     <script defer src="ros_buttons.js"></script>
 
     <title>Project Starling</title>
@@ -62,9 +62,8 @@
                         <p style="display:none; color:#FF0000" id="missionStartSentMessage">SENT</p>
                     </div>
                 </div>
-                <img id="missionStartButton" alt="Mission Start Button" src="images/go-button.png"> 
-            </div>
-            <div class="col-6">
+                <img id="missionStartButton" style='height: 35%; width: 35%; object-fit: contain' alt="Mission Start Button" src="images/go-button.png"> 
+            
                 <div class = "row">
                     <div class="col-6">
                         <p>This will publish to topic /emergency_stop</p>
@@ -73,9 +72,17 @@
                         <p style="display:none; color:#FF0000" id="eStopSentMessage">SENT</p>
                     </div>
                 </div>
-                <img id="eStopButton" alt="Emergency Stop Button" src="images/stop-button.jpg">
+                <img id="eStopButton" style='height: 35%; width: 35%; object-fit: contain' alt="Emergency Stop Button" src="images/stop-button.jpg">
+            </div>
+        
+            <div class="col-6">
+                <label for="image_topic">Compressed Image Topic (default: /vehicle_1/camera/image_raw/compressed): </label>
+                <input id="imagetopic_input" name="imagetopic_input" size=25>
+                <img id="my_image" style='height: 100%; width: 100%; object-fit: contain' src="images/starling.jpg">
             </div>
         </div>
+
+        
 
     </div>
     

@@ -53,6 +53,29 @@ var start_publisher = new ROSLIB.Topic({
   messageType : 'std_msgs/Empty'
 });
 
+var image_topic = null;
+document.getElementById('imagetopic_input').value="/vehicle_1/camera/image_raw/compressed"
+function setImageTopic(topic_name) {
+  console.log("Triggered");
+  console.log(image_topic);
+  if(image_topic != null) {
+    image_topic.unsubscribe();
+    document.getElementById('my_image').src = "images/starling.jpg"
+  }
+  // Image topic
+  image_topic = new ROSLIB.Topic({
+    ros: ros, 
+    name: topic_name,
+    messageType: 'sensor_msgs/CompressedImage'
+  });
+
+  image_topic.subscribe(function(message) {
+    var jpeg_file = btoa(String.fromCharCode.apply(null, message.data));
+    document.getElementById('my_image').src = "data:image/jpg;base64," + jpeg_file;
+  });
+
+}
+
 function sendEmergencyStop() {
   estop_publisher.publish({});
   console.log("Emergency Stop Pressed")
@@ -79,3 +102,5 @@ document.getElementById('eStopButton').addEventListener('click',sendEmergencySto
 document.getElementById('missionStartButton').addEventListener('click',sendMissionStart);
 document.getElementById('rosbridgeport_input').addEventListener('input', function(evt) {connectRosbridge(this.value);})
 document.getElementById('rosbridgeport_input').dispatchEvent(new Event('input')); // Trigger default
+document.getElementById('imagetopic_input').addEventListener('input', function(evt) {setImageTopic(this.value);})
+document.getElementById('imagetopic_input').dispatchEvent(new Event('input')); // Trigger default
