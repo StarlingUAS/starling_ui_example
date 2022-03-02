@@ -3,7 +3,7 @@
 Builds a container that serves a web-based UI for the system. Uses
 RobotWebTools' `ros2-web-bridge` and `rclnodejs` internally.
 
-![starling-ui](../img/starling-ui.png)
+![starling-ui](ui.png)
 
 ## Contents
 [TOC]
@@ -27,7 +27,9 @@ To start the image:
 > NB: Port 3000 is exposed for the webserver, while port 9090 is exposed for the
 websocket.
 
-> **NOTE:** The default behavious does not start the rosbridge server itself. It is assumed that this will be run with `ProjectStarling` and that a bridge already exists on the network. To run this standalone, include `-e USE_ROSBRIDGE=true` when running `docker run` above. 
+> Also note that you may need to change the `--net=` argument to the docker network currently running. Usually is `<folder_in_which_docker-compose_is_run>_default`, e.g. `px4_default` if docker-compose is run from the `px4` folder.
+
+> **NOTE:** The default behavious does not start the rosbridge server itself. It is assumed that this will be run with `ProjectStarling` and that a bridge already exists on the network. To run this standalone, include `-e USE_ROSBRIDGE=true` when running `docker run` above.
 
 Once the container is running, navigate to:
 [`http://127.0.0.1:3000`](http://127.0.0.1:3000)
@@ -50,11 +52,17 @@ ros2 topic echo /emergency_stop
 
 ### Development
 
+First ensure that you are in this repositories folder, otherwise the relative file paths will be wrong.
+
 To start the image with development folder bound into the container, in this folder run:
-```
+```console
 docker run -it --rm --network projectstarling_default -v "$(pwd)"/ui/src:/ros_ws/src/ros2-web-bridge/examples/ -p 3000:3000 -p 9090:9090 starling-ui
+# or for windows powershell
+docker run -it --rm --network projectstarling_default -v ${PWD}/ui/src:/ros_ws/src/ros2-web-bridge/examples/ -p 3000:3000 -p 9090:9090 starling-ui
 ```
 This will bind mount the html folder into the wanted directory.
+
+> **Bind mounting** refers to attaching a file or directory on the host machine into a container. This allows the container to access and read the local version of the folder. Therefore allowing any local changes to be seen within the container itself.
 
 This will allow local changes made to the web files to be reflected by refreshing the page brings.
 
@@ -71,10 +79,3 @@ This will both start the `uobflightlabstarling/starling-ui` image, and a kuberne
 
 > **NOTE**:
 > Localhost port 9090 is also used for `ros_bridge` traffic
-
-## Notes
-
-To support the full gamut of MAVROS messages, this will likely need to be built
-on top of an image containing the mavros_msgs package for ROS2. Lots of things
-are likely to need this so it may be worth making this one of the base layers
-for the system.
